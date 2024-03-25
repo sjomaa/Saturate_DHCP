@@ -1,6 +1,15 @@
 import random
 from scapy.all import Ether, IP, UDP, BOOTP, DHCP, srp1
 import MAC_Changer
+import argparse
+
+def main():
+    parser = argparse.ArgumentParser(description='Test the DHCP server by sending multiple requests.')
+    parser.add_argument('-n', '--num_requests', type=int, required=True, help='Number of DHCP requests to send')
+    parser.add_argument('-i', '--interface', type=str, required=True, help='Name of the interface to use')
+    args = parser.parse_args()
+
+    test_dhcp(args.num_requests, args.interface)
 
 # Dictionary to store transaction IDs for each MAC address
 mac_xid = {}
@@ -25,11 +34,12 @@ def dhcp_request(mac_address):
     # Send the DHCP request and get the response
     response = srp1(dhcp_request, verbose=False, timeout=8)
 
-def test_dhcp(num_requests):
+def test_dhcp(num_requests, interface):
     """Test the DHCP server by sending multiple requests."""
     for _ in range(num_requests):
-        mac_address = MAC_Changer.generate_and_change_mac("wlo1")
+        mac_address = MAC_Changer.generate_and_change_mac(interface)
         offered_ip = dhcp_request(mac_address)
 
-# Replace with your DHCP server IP and the number of requests you want to send
-test_dhcp(210)
+
+if __name__ == "__main__":
+    main()
