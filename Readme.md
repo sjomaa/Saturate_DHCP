@@ -12,7 +12,7 @@ This tool requires the following Python libraries:
 You can install these dependencies using pip:
 
 ```bash
-pip install scapy argparse
+sudo pip3 install scapy argparse
 ```
 ## Usage
 
