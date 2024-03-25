@@ -15,11 +15,27 @@ def main():
 mac_xid = {}
 
 def mac2str(mac):
-    """Convert a MAC address from string format to binary format."""
+    """
+    Convert a MAC address from string format to binary format.
+
+    Args:
+        mac (str): The MAC address in string format.
+
+    Returns:
+        str: The MAC address in binary format.
+    """
     return ''.join(chr(int(x, 16)) for x in mac.split(':'))
 
 def dhcp_request(mac_address):
-    """Send a DHCP request and return the offered IP address."""
+    """
+    Send a DHCP request and return the offered IP address.
+
+    Args:
+        mac_address (str): The MAC address to use for the DHCP request.
+
+    Returns:
+        str: The offered IP address.
+    """
     # Generate a random transaction ID for this MAC address if it doesn't have one
     if mac_address not in mac_xid:
         mac_xid[mac_address] = random.randint(0x0, 0xffffffff)
@@ -35,7 +51,13 @@ def dhcp_request(mac_address):
     response = srp1(dhcp_request, verbose=False, timeout=8)
 
 def test_dhcp(num_requests, interface):
-    """Test the DHCP server by sending multiple requests."""
+    """
+    Test the DHCP server by sending multiple requests.
+
+    Args:
+        num_requests (int): The number of DHCP requests to send.
+        interface (str): The name of the interface to use for the requests.
+    """
     for _ in range(num_requests):
         mac_address = MAC_Changer.generate_and_change_mac(interface)
         offered_ip = dhcp_request(mac_address)
